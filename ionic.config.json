@@ -1,0 +1,7 @@
+{
+  "name": "burnt-tofu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
