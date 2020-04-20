@@ -1,0 +1,14 @@
+  
+pipeline:
+  build:
+    image: node
+    commands:
+      - npm install
+      - npm run-script build-prod
+  deploy:
+    image: cschlosser/drone-ftps
+    hostname: ftp.jwetzell.com:21
+    secrets: [ ftp_username, ftp_password ]
+    secure: false
+    src_dir: /dist/burnt-tofu-web/
+    clean_dir: true
