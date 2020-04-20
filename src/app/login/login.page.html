@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-label>API Key</ion-label>
+        <ion-input type="text" [(ngModel)]="apiToken"></ion-input>
+    </ion-item>
+    <ion-button (click)="login()">Submit</ion-button>
+</ion-content>
