@@ -10,5 +10,5 @@ pipeline:
     hostname: ftp.jwetzell.com:21
     secrets: [ ftp_username, ftp_password ]
     secure: false
-    src_dir: /dist/burnt-tofu-web/
+    src_dir: /www/
     clean_dir: true
