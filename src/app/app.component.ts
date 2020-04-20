@@ -20,7 +20,8 @@ export class AppComponent {
     private router: Router
   ) {
     this.initializeApp();
-    this.tokenService.logout()
+    //This was for testing purposes so I could 'logout'
+    //this.tokenService.logout()
     this.tokenService.getIsAuthenticated().subscribe(
       (auth)=>{
         console.log(auth)
