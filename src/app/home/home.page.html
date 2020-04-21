@@ -13,7 +13,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container" *ngIf="userObs | async as user">
+  <div id="container" *ngIf="user | async as user">
     <strong>Welcome {{user.username}}!</strong>
   </div>
 </ion-content>

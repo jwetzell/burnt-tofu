@@ -24,7 +24,6 @@ export class AppComponent {
     //this.tokenService.logout()
     this.tokenService.getIsAuthenticated().subscribe(
       (auth)=>{
-        console.log(auth)
         if(!auth){
           this.router.navigate(['login'])
         }else{

@@ -8,11 +8,11 @@ import { map } from 'rxjs/operators';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
-  userObs: Observable<UserData>
+  user: Observable<UserData>
   constructor(private userService:UserService) {}
 
   ngOnInit(){
-    this.userObs = this.userService.getUser().pipe(
+    this.user = this.userService.getUser().pipe(
       map(user=>user.data)
     )
   }
