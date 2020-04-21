@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, UserData } from 'wanikani-api-ng';
+import { UserData } from 'wanikani-api-ng';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ModalController } from '@ionic/angular';
+import { UserModal } from '../user/user.modal';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -9,11 +11,18 @@ import { map } from 'rxjs/operators';
 })
 export class HomePage implements OnInit{
   user: Observable<UserData>
-  constructor(private userService:UserService) {}
+  constructor(private modalController:ModalController) {}
 
   ngOnInit(){
-    this.user = this.userService.getUser().pipe(
-      map(user=>user.data)
+  }
+
+  openUserModal(){
+    this.modalController.create({
+      component:UserModal
+    }).then(
+      (userModal)=>{
+        userModal.present();
+      }
     )
   }
 
