@@ -24,15 +24,11 @@ export class MenuComponent implements OnInit {
   openUserPopOver(event: any){
     const userPopOver = this.popoverController.create({
       component: UserInfoComponent,
-      event:event,
+      event: event,
       translucent: true
     })
 
-    userPopOver.then(
-      (popover)=>{
-        popover.present()
-      }
-    )
+    userPopOver.then(popover => popover.present())
   }
 
 }
