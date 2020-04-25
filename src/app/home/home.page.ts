@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserData } from 'wanikani-api-ng';
 import { Observable } from 'rxjs';
 import { ModalController } from '@ionic/angular';
-import { UserModal } from '../user/user.modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,19 +11,13 @@ import { UserModal } from '../user/user.modal';
 })
 export class HomePage implements OnInit{
   user: Observable<UserData>
-  constructor(private modalController:ModalController) {}
+  constructor(private modalController:ModalController, private router:Router) {}
 
   ngOnInit(){
   }
 
   openUserModal(){
-    this.modalController.create({
-      component:UserModal
-    }).then(
-      (userModal)=>{
-        userModal.present();
-      }
-    )
+    this.router.navigate(['/user'])
   }
 
 }

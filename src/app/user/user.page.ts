@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, UserData, WanikaniTokenService, WaniSubscription, Preferences } from 'wanikani-api-ng';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.modal.html',
-  styleUrls: ['./user.modal.scss'],
+  templateUrl: './user.page.html',
+  styleUrls: ['./user.page.scss'],
 })
-export class UserModal implements OnInit {
+export class UserPage implements OnInit {
 
-  constructor(private userService: UserService, private tokenService:WanikaniTokenService, private modalController: ModalController) { }
+  constructor(private userService: UserService, private tokenService:WanikaniTokenService, private router: Router) { }
   
   user: Observable<UserData>
   subscription: Observable<WaniSubscription>
@@ -30,12 +30,12 @@ export class UserModal implements OnInit {
   }
   
   dismiss(){
-    this.modalController.dismiss();
+    this.router.navigate(['/home']);
   }
 
   logout(){
     this.tokenService.logout();
-    this.modalController.dismiss();
+    this.router.navigate(['/home']);
   }
 
 }
