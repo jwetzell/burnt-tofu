@@ -12,16 +12,12 @@ import { PopoverController } from '@ionic/angular';
 export class UserInfoComponent implements OnInit {
 
   user: Observable<UserData>;
-  subscription: Observable<WaniSubscription>;
 
   constructor(private userService:UserService, private tokenService: WanikaniTokenService, private popoverController: PopoverController) { }
 
   ngOnInit() {
     this.user = this.userService.getUser().pipe(
       map(user=>user.data)
-    )
-    this.subscription = this.user.pipe(
-      map(user=>user.subscription)
     )
   }
 
