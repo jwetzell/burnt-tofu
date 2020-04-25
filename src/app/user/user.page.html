@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>WaniKani User Info</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="user | async as user">
+        <ion-item>
+            User ID: {{user.id}}
+        </ion-item>
+        <ion-item>
+            Username: {{user.username}}
+        </ion-item>
+        <ion-item>
+            Level: {{user.level}}
+        </ion-item>
+        <ion-item>
+            Profile URL: {{user.profile_url}}
+        </ion-item>
+        <ion-item>
+            Started At: {{user.started_at}}
+        </ion-item>
+        <ion-item>
+            Current Vacation Started: {{user.current_vacation_started_at}}
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="subscription | async as subscription">
+        <ion-list-header>
+            <h3>Subscription Info</h3>
+        </ion-list-header>
+        <ion-item>
+            Active: {{subscription.active}}
+        </ion-item>
+        <ion-item>
+            Type: {{subscription.type}}
+        </ion-item>
+        <ion-item>
+            Max Level Granted: {{subscription.max_level_granted}}
+        </ion-item>
+        <ion-item>
+            Period Ends At: {{subscription.period_ends_at}}
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="preferences | async as preferences">
+        <ion-list-header>
+            <h3>Preferences</h3>
+        </ion-list-header>
+        <ion-item>
+            Default Voice Actor ID: {{preferences.default_voice_actor_id}}
+        </ion-item>
+        <ion-item>
+            Autoplay Lesson Audio: {{preferences.lessons_autoplay_audio}}
+        </ion-item>
+        <ion-item>
+            Autoplay Review Audio: {{preferences.reviews_autoplay_audio}}
+        </ion-item>
+        <ion-item>
+            Lesson Batch Size: {{preferences.lessons_batch_size}}
+        </ion-item>
+        <ion-item>
+            Lesson Presentation Order: {{preferences.lessons_presentation_order}}
+        </ion-item>
+        <ion-item>
+            Show SRS Indicator in Reviews: {{preferences.reviews_display_srs_indicator}}
+        </ion-item>
+    </ion-list>
+    <ion-button (click)="logout()" expand="block" color="danger">Logout</ion-button>
+</ion-content>
