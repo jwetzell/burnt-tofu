@@ -1,8 +1,8 @@
 <ion-header *ngIf="user | async as user">
-    <ion-toolbar >
-        <ion-item slot="start" lines="none">Level {{user.level}}</ion-item>
+    <ion-toolbar>
         <ion-title (click)="openUserPopOver($event)">{{user.username}}</ion-title>
-        <ion-item slot="end" lines="none" class="ion-text-capitalize">{{user.subscription.type}}</ion-item>
+        <ion-item slot="end" lines="none">Level {{user.level}}</ion-item>
+        <!-- <ion-item slot="end" lines="none" class="ion-text-capitalize">{{user.subscription.type}}</ion-item> -->
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -12,3 +12,4 @@
         </ion-item>
     </ion-menu-toggle>
 </ion-content>
+ 
