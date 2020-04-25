@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { WanikaniTokenService } from 'wanikani-api-ng';
@@ -11,19 +11,25 @@ import { Router } from '@angular/router';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private tokenService: WanikaniTokenService,
-    private router: Router
+    private router: Router,
+    private menuController: MenuController,
   ) {
     this.initializeApp();
     //This was for testing purposes so I could 'logout'
     //this.tokenService.logout()
+    toString
+  }
+
+  ngOnInit(){
     this.tokenService.getIsAuthenticated().subscribe(
       (auth)=>{
+        this.menuController.enable(auth,'side')
         if(!auth){
           this.router.navigate(['login'])
         }else{

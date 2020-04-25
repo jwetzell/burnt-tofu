@@ -29,13 +29,12 @@ export class UserPage implements OnInit {
     )
   }
   
-  dismiss(){
+  close(){
     this.router.navigate(['/home']);
   }
 
   logout(){
     this.tokenService.logout();
-    this.router.navigate(['/home']);
   }
 
 }

@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { WanikaniApiNgModule, WanikaniTokenModule } from 'wanikani-api-ng';
+import { MenuModule } from './menu/menu.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { WanikaniApiNgModule, WanikaniTokenModule } from 'wanikani-api-ng';
     BrowserAnimationsModule,
     WanikaniApiNgModule,
     WanikaniTokenModule,
+    MenuModule
   ],
   providers: [
     StatusBar,
