@@ -13,6 +13,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { WanikaniApiNgModule, WanikaniTokenModule } from 'wanikani-api-ng';
 import { MenuModule } from './menu/menu.module';
+import { HomePageModule } from './home/home.module';
+import { UserPageModule } from './user/user.module';
+import { LoginPageModule } from './login/login.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +27,11 @@ import { MenuModule } from './menu/menu.module';
     BrowserAnimationsModule,
     WanikaniApiNgModule,
     WanikaniTokenModule,
-    MenuModule
+    MenuModule,
+
+    LoginPageModule,
+    HomePageModule,
+    UserPageModule,
   ],
   providers: [
     StatusBar,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WanikaniTokenService, UserData, UserService } from 'wanikani-api-ng';
-import { Observable, iif, EMPTY } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, filter, takeUntil, switchMap, tap } from 'rxjs/operators';
 import { PopoverController } from '@ionic/angular';
 import { UserInfoComponent } from '../user-info/user-info.component';
 
@@ -13,12 +13,14 @@ import { UserInfoComponent } from '../user-info/user-info.component';
 export class MenuComponent implements OnInit {
 
   user: Observable<UserData>;
+  userLoaded = new Subject();
   constructor(private tokenService: WanikaniTokenService, private userService: UserService, private popoverController: PopoverController) { }
 
   ngOnInit() {
     this.user = this.tokenService.getIsAuthenticated().pipe(
-      mergeMap(auth => iif(() => auth, this.userService.getUser().pipe(map(user => user.data)), EMPTY))
-    );
+      filter(auth => auth),
+      switchMap(_ => this.userService.getUser().pipe(map(user => user.data)))
+    )
   }
 
   openUserPopOver(event: any){

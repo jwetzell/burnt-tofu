@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'wanikani-api-ng';
+import { HomePage } from './home/home.page';
+import { UserPage } from './user/user.page';
+import { LoginPage } from './login/login.page';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', canActivate: [AuthGuard] ,loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
-  { path: 'user', canActivate: [AuthGuard] ,loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)},
-  {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'home', canActivate: [AuthGuard], component: HomePage },
+  { path: 'user', canActivate: [AuthGuard], component: UserPage },
+  { path: 'login', component: LoginPage },
 ];
 
 @NgModule({

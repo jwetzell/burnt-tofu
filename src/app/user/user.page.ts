@@ -18,15 +18,7 @@ export class UserPage implements OnInit {
   preferences: Observable<Preferences>
 
   ngOnInit() {
-    this.user = this.userService.getUser().pipe(
-      map(user=>user.data)
-    )
-    this.subscription = this.user.pipe(
-      map(user=>user.subscription)
-    )
-    this.preferences = this.user.pipe(
-      map(user=>user.preferences)
-    )
+    this.user = this.userService.getUser().pipe(map(user => user.data));
   }
   
   close(){
