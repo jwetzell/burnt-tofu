@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, UserData, WanikaniTokenService } from 'wanikani-api-ng';
-import { Observable } from 'rxjs';
+import { Observable, iif, EMPTY } from 'rxjs';
 import { PopoverController } from '@ionic/angular';
+import { mergeMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-info',
@@ -15,7 +16,9 @@ export class UserInfoComponent implements OnInit {
   constructor(private userService:UserService, private tokenService: WanikaniTokenService, private popoverController: PopoverController) { }
 
   ngOnInit() {
-    
+    this.user = this.userService.getUser().pipe(
+      map(user=>user.data)
+    )
   }
 
   logout(){
