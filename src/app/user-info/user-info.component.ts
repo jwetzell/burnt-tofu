@@ -23,6 +23,7 @@ export class UserInfoComponent implements OnInit {
 
   logout(){
     this.popoverController.dismiss()
+    this.userService.clearCache();
     this.tokenService.logout()
   }
 
