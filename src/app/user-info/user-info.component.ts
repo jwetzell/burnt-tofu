@@ -16,13 +16,8 @@ export class UserInfoComponent implements OnInit {
   constructor(private userService:UserService, private tokenService: WanikaniTokenService, private popoverController: PopoverController) { }
 
   ngOnInit() {
-    this.user = this.tokenService.getIsAuthenticated().pipe(
-      mergeMap(auth=>iif(
-        ()=>auth,
-        this.userService.getUser().pipe(
-          map(user=>user.data)
-        ),
-        EMPTY))
+    this.user = this.userService.getUser().pipe(
+      map(user=>user.data)
     )
   }
 
