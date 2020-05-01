@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title mode="md">Settings</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="close()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form [formGroup]="preferencesForm" (ionChange)="updatePreferences()">
+        <ion-list *ngIf="preferences | async as preferences">
+            <ion-list-header>
+                <h3>WaniKani Preferences</h3>
+            </ion-list-header>
+            <ion-item *ngIf="voiceActors | async as voiceActors">
+                <ion-label>Default Voice Actor</ion-label>
+                <ion-select formControlName="default_voice_actor_id" [compareWith]="compareWithFn">
+                    <ion-select-option *ngFor="let voiceActor of voiceActors" [value]="voiceActor.id">{{voiceActor.data.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Autoplay Lesson Audio</ion-label>
+                <ion-toggle formControlName="lessons_autoplay_audio"></ion-toggle>
+            </ion-item>
+            <ion-item>
+                <ion-label>Autoplay Reviews Audio</ion-label>
+                <ion-toggle formControlName="reviews_autoplay_audio"></ion-toggle>
+            </ion-item>
+            <ion-item>
+                <ion-label>Show SRS in Reveiws</ion-label>
+                <ion-toggle formControlName="reviews_display_srs_indicator"></ion-toggle>
+            </ion-item>
+            <ion-item>
+                <ion-label>Lesson Batch Size</ion-label>
+                <ion-select formControlName="lessons_batch_size" [compareWith]="compareWithFn">
+                    <ion-select-option *ngFor="let size of batchSizes">{{size}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Lesson Presentation Order</ion-label>
+                <ion-select formControlName="lessons_presentation_order" [compareWith]="compareWithFn">
+                    <ion-select-option *ngFor="let order of keys(presentationOrderEnum)" [value]="presentationOrderEnum[order]">
+                        {{order}}
+                    </ion-select-option>
+                </ion-select>
+            </ion-item>
+        </ion-list>
+    </form>
+</ion-content>
