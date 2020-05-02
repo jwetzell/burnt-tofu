@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UserService, Preferences, VoiceActor, VoiceActorService, PresentationOrder } from 'wanikani-api-ng';
-import { Observable } from 'rxjs';
-import { map, tap, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, tap, take, takeUntil } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -10,8 +10,10 @@ import { FormGroup, FormControl } from '@angular/forms';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
-  preferences: Observable<Preferences>
+export class SettingsPage implements OnInit, OnDestroy {
+
+  private destroyed = new Subject<boolean>();
+
   voiceActors: Observable<VoiceActor[]>
   //WaniKani accepts batch sizes from 3 to 10 inclusive this array is for using ngFor
   batchSizes = Array(8).fill(1).map((x,i)=>i+3)
@@ -34,13 +36,15 @@ export class SettingsPage implements OnInit {
                 private voiceActorService: VoiceActorService,
                 private toastController: ToastController) { }
 
-  ngOnInit() {
-    this.preferences = this.userService.getUser().pipe(
-      map(user => user.data.preferences),
-      take(1) //prevents the following subscribe from triggering more than once?
-    )
+  ngOnDestroy(): void {
+    this.destroyed.next(true);
+  }
 
-    this.preferences.subscribe(
+  ngOnInit() {
+    this.userService.getUser().pipe(
+      map(user => user.data.preferences),
+      takeUntil(this.destroyed)
+    ).subscribe(
       (preferences)=>{
         this.preferencesForm.patchValue(preferences)
       }
@@ -56,13 +60,10 @@ export class SettingsPage implements OnInit {
   }
 
   updatePreferences(){
-    this.preferences = this.userService.updateUser(this.preferencesForm.value).pipe(
+    this.userService.updateUser(this.preferencesForm.value).pipe(
       map(user => user.data.preferences)
-    )
-    
-    this.preferences.subscribe(
-      (preferences)=>{
-        this.preferencesForm.patchValue(preferences)
+    ).subscribe(
+      ()=>{
         //this could be more elegant but works for now
         this.toastController.create({
           duration: 2000,
