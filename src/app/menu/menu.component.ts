@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WanikaniTokenService, UserData, UserService } from 'wanikani-api-ng';
 import { Observable, Subject } from 'rxjs';
 import { map, filter, takeUntil, switchMap, tap } from 'rxjs/operators';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ModalController } from '@ionic/angular';
 import { UserInfoComponent } from '../user-info/user-info.component';
+import { SettingsPage } from '../settings/settings.page';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,10 @@ export class MenuComponent implements OnInit {
 
   user: Observable<UserData>;
   userLoaded = new Subject();
-  constructor(private tokenService: WanikaniTokenService, private userService: UserService, private popoverController: PopoverController) { }
+  constructor(private tokenService: WanikaniTokenService, 
+              private userService: UserService, 
+              private popoverController: PopoverController,
+              private modalController: ModalController) { }
 
   ngOnInit() {
     this.user = this.tokenService.getIsAuthenticated().pipe(
@@ -31,6 +35,22 @@ export class MenuComponent implements OnInit {
     })
 
     userPopOver.then(popover => popover.present())
+  }
+
+  logout(){
+    this.tokenService.logout()
+  }
+
+  openPreferences(){
+    const preferenceModal = this.modalController.create({
+      component: SettingsPage
+    });
+
+    preferenceModal.then(
+      (modal)=>{
+        modal.present()
+      }
+    )
   }
 
 }

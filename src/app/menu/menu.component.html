@@ -1,15 +1,32 @@
-<ion-header *ngIf="user | async as user">
-    <ion-toolbar>
-        <ion-title (click)="openUserPopOver($event)">{{user.username}}</ion-title>
-        <ion-item slot="end" lines="none">Level {{user.level}}</ion-item>
-        <!-- <ion-item slot="end" lines="none" class="ion-text-capitalize">{{user.subscription.type}}</ion-item> -->
-    </ion-toolbar>
-</ion-header>
-<ion-content>
-    <ion-menu-toggle autoHide="false">
-        <ion-item [routerLink]="['/user']">
-            <ion-label>Advanced User Info</ion-label>
-        </ion-item>
-    </ion-menu-toggle>
-</ion-content>
+<ion-menu contentId="main" menuId="side">
+    <ion-header *ngIf="user | async as user">
+        <ion-toolbar>
+            <ion-title (click)="openUserPopOver($event)">{{user.username}}</ion-title>
+            <ion-item slot="end" lines="none">Level {{user.level}}</ion-item>
+            <!-- <ion-item slot="end" lines="none" class="ion-text-capitalize">{{user.subscription.type}}</ion-item> -->
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-menu-toggle autoHide="false">
+            <ion-item [routerLink]="['/user']">
+                <ion-label>Advanced User Info</ion-label>
+            </ion-item>
+        </ion-menu-toggle>
+    </ion-content>
+    <ion-footer>
+        <ion-list lines="full">
+            <ion-menu-toggle>
+                <ion-item (click)="openPreferences()">
+                    <ion-label>Settings</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle>
+                <ion-item (click)="logout()">
+                    <ion-label>Logout</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+        </ion-list>
+    </ion-footer>
+</ion-menu>
+
  

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MenuComponent } from './menu.component';
 import { RouterModule } from '@angular/router';
 import { UserInfoModule } from '../user-info/user-info.module';
+import { SettingsPageModule } from '../settings/settings.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { UserInfoModule } from '../user-info/user-info.module';
     FormsModule,
     IonicModule,
     RouterModule,
-    UserInfoModule
+    UserInfoModule,
+    SettingsPageModule
   ],
   declarations: [MenuComponent],
   exports: [MenuComponent]
