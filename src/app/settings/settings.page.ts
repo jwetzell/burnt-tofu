@@ -33,10 +33,13 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.preferences = this.userService.getUser().pipe(
-      map(user => user.data.preferences),
-      tap(preferences=>{
+      map(user => user.data.preferences)
+    )
+
+    this.preferences.subscribe(
+      (preferences)=>{
         this.preferencesForm.patchValue(preferences)
-      })
+      }
     )
 
     this.voiceActors = this.voiceActorService.getAllVoiceActors().pipe(
@@ -50,10 +53,13 @@ export class SettingsPage implements OnInit {
 
   updatePreferences(){
     this.preferences = this.userService.updateUser(this.preferencesForm.value).pipe(
-      map(user => user.data.preferences),
-      tap(preferences=>{
+      map(user => user.data.preferences)
+    )
+    
+    this.preferences.subscribe(
+      (preferences)=>{
         this.preferencesForm.patchValue(preferences)
-      })
+      }
     )
   }
 

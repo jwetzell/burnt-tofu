@@ -11,7 +11,7 @@
 
 <ion-content>
     <form [formGroup]="preferencesForm" (ionChange)="updatePreferences()">
-        <ion-list *ngIf="preferences | async as preferences">
+        <ion-list>
             <ion-list-header>
                 <h3>WaniKani Preferences</h3>
             </ion-list-header>
