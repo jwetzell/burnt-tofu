@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UserService, VoiceActor, VoiceActorService, PresentationOrder } from 'wanikani-api-ng';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, take } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -61,7 +61,8 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   updatePreferences(){
     this.userService.updateUser(this.preferencesForm.value).pipe(
-      map(user => user.data.preferences)
+      map(user => user.data.preferences),
+      take(1)
     ).subscribe(
       ()=>{
         //this could be more elegant but works for now
