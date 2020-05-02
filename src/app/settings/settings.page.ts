@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { UserService, Preferences, VoiceActor, VoiceActorService, PresentationOrder } from 'wanikani-api-ng';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -29,7 +29,10 @@ export class SettingsPage implements OnInit {
     reviews_display_srs_indicator: new FormControl(""),
   })
 
-  constructor(private modalController: ModalController, private userService: UserService, private voiceActorService: VoiceActorService) { }
+  constructor(  private modalController: ModalController, 
+                private userService: UserService, 
+                private voiceActorService: VoiceActorService,
+                private toastController: ToastController) { }
 
   ngOnInit() {
     this.preferences = this.userService.getUser().pipe(
@@ -59,6 +62,16 @@ export class SettingsPage implements OnInit {
     this.preferences.subscribe(
       (preferences)=>{
         this.preferencesForm.patchValue(preferences)
+        //this could be more elegant but works for now
+        this.toastController.create({
+          duration: 2000,
+          message: 'Preferences Successfully Updated',
+          color: 'success'
+        }).then(
+          (toast)=>{
+            toast.present()
+          }
+        )
       }
     )
   }
