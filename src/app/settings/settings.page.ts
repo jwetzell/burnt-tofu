@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UserService, Preferences, VoiceActor, VoiceActorService, PresentationOrder } from 'wanikani-api-ng';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -36,11 +36,13 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.preferences = this.userService.getUser().pipe(
-      map(user => user.data.preferences)
+      map(user => user.data.preferences),
+      take(1) //prevents the following subscribe from triggering more than once?
     )
 
     this.preferences.subscribe(
       (preferences)=>{
+        console.log("value patched from ngoninit")
         this.preferencesForm.patchValue(preferences)
       }
     )
