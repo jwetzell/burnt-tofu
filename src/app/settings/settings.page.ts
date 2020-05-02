@@ -42,7 +42,6 @@ export class SettingsPage implements OnInit {
 
     this.preferences.subscribe(
       (preferences)=>{
-        console.log("value patched from ngoninit")
         this.preferencesForm.patchValue(preferences)
       }
     )
