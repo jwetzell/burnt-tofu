@@ -36,10 +36,6 @@ export class SettingsPage implements OnInit, OnDestroy {
                 private voiceActorService: VoiceActorService,
                 private toastController: ToastController) { }
 
-  ngOnDestroy(): void {
-    this.destroyed.next(true);
-  }
-
   ngOnInit() {
     this.userService.getUser().pipe(
       map(user => user.data.preferences),
@@ -53,6 +49,10 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.voiceActors = this.voiceActorService.getAllVoiceActors().pipe(
       map(voiceActorCollection => voiceActorCollection.data)
     )
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next(true);
   }
 
   close(){
@@ -70,6 +70,18 @@ export class SettingsPage implements OnInit, OnDestroy {
           duration: 2000,
           message: 'Preferences Successfully Updated',
           color: 'success'
+        }).then(
+          (toast)=>{
+            toast.present()
+          }
+        )
+      },
+      ()=>{
+        //this could be more elegant but works for now
+        this.toastController.create({
+          duration: 2000,
+          message: 'Updating Preferences Failed',
+          color: 'danger'
         }).then(
           (toast)=>{
             toast.present()

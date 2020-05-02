@@ -11,7 +11,7 @@ import { SettingsPage } from '../settings/settings.page';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit, OnDestroy {
+export class MenuComponent implements OnInit {
 
   user: Observable<UserData>;
   userLoaded = new Subject();
@@ -21,15 +21,10 @@ export class MenuComponent implements OnInit, OnDestroy {
               private modalController: ModalController) { }
 
   ngOnInit() {
-    console.log('menu init')
     this.user = this.tokenService.getIsAuthenticated().pipe(
       filter(auth => auth),
       switchMap(_ => this.userService.getUser().pipe(map(user => user.data)))
     )
-  }
-
-  ngOnDestroy(){
-    console.log('menu destroy')
   }
 
   openUserPopOver(event: any){
