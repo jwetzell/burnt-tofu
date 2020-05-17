@@ -10,22 +10,22 @@
 </ion-header>
 
 <ion-content>
-    <ng-container *ngIf="summary | async as summary">
+    <ng-container>
         <ion-list>
             <ion-list-header>Available</ion-list-header>
-            <ion-item>
-                <ion-label>Lessons</ion-label>
-                <ion-badge slot="end">{{summary.lessons[0].subject_ids.length}}</ion-badge>
+            <ion-item *ngIf="firstLesson | async as lesson">
+                <ion-button fill="clear" (click)="startLesson(lesson)">Lessons</ion-button>
+                <ion-badge slot="end">{{lesson.subject_ids.length}}</ion-badge>
             </ion-item>
-            <ion-item>
-                <ion-label>Reviews</ion-label>
-                <ion-badge slot="end">{{summary.reviews[0].subject_ids.length}}</ion-badge>
+            <ion-item *ngIf="firstReview | async as review">
+                <ion-button fill="clear" (click)="startReview(review)">Reviews</ion-button>
+                <ion-badge slot="end">{{review.subject_ids.length}}</ion-badge>
             </ion-item>
         </ion-list>
     
         <ion-list>
             <ion-list-header>Upcoming Reviews</ion-list-header>
-            <ng-container *ngFor="let review of summary.reviews | slice:1">
+            <ng-container *ngFor="let review of upcomingReviews | async">
                 <ion-item *ngIf="review.subject_ids.length > 0">
                     <ion-label>{{review.available_at | date:'h a'}}</ion-label>
                     <ion-badge slot="end">{{review.subject_ids.length}}</ion-badge>
