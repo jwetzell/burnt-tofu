@@ -7,7 +7,8 @@ import { WanikaniTokenService } from 'wanikani-api-ng';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  apiToken: string;
+  apiToken = '';
+  
   constructor(private tokenService: WanikaniTokenService) { }
 
   ngOnInit() {
