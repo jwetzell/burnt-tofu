@@ -1,12 +1,14 @@
-name: Node.js CI
+name: BurntTofu Buid and Deploy
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js
@@ -19,16 +21,10 @@ jobs:
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        # ftp server
         server: ${{ secrets.FTP_HOST }}
-        # ftp username
         username: ${{ secrets.FTP_USERNAME }}
-        # ftp password
         password: ${{ secrets.FTP_PASSWORD }}
-        # Server port to connect to (read your web hosts docs)
         port: 21
-        # protocol to deploy with - ftp, ftps, or ftps-legacy
         protocol: ftp
-        # Folder to upload from, must end with trailing slash /
         local-dir: ./www/
   
