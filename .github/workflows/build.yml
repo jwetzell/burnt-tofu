@@ -1,6 +1,10 @@
-name: Node.js CI
+name: BurnTofu Build
 
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore: [ master ]
+  pull_request:
+    branches-ignore: [ master ]
 
 jobs:
   build:
@@ -15,3 +19,4 @@ jobs:
         node-version: '12.x'
     - run: npm install
     - run: npm run-script build-prod
+  
