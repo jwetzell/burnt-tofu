@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from "@ionic/angular";
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -21,6 +22,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private summaryService: SummaryService,
+    private router: Router,
     private toastController: ToastController) { }
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class HomePage implements OnInit {
         duration: 500
       }).then(toast => toast.present());
     } else {
-
+      this.router.navigate(['/lesson'])
     }
   }
 

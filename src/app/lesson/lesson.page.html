@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>lesson</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="allSubjects | async as subjects">
+    <ion-slides pager="true" [options]="slideOpts" style="height:100%; width:100%;" id="subjectSlides">
+      <ng-container *ngFor="let subject of subjects">
+        <ion-slide>
+          <div style="height:100%; width:100%">
+            <ion-card class="main-info-card">
+              <ion-card-content>
+                <h1 style="width:100%;text-align: center;font-size: 5em;">{{subject.data.characters[0]}}</h1>
+
+                <h1 style="width:100%;text-align: center;">{{subject.data.meanings[0].meaning | titlecase}}</h1>
+              </ion-card-content>
+            </ion-card>
+
+            <ion-slides [options]="slideOpts" style="height:75%" >
+              <ion-slide>
+                <ion-card style="height:100%;width:100%;margin:0%;">
+                  <ion-card-header>
+                    <ion-card-title>Radicals</ion-card-title>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                    <ion-title>Radical Composition</ion-title>
+                    <div [ngPlural]="subject.data.component_subject_ids.length">
+                      <ng-template ngPluralCase="=1">
+                        This kanji is composed of one radical. Can you see where the radical fits in the kanji? 
+                      </ng-template>
+                      <ng-template ngPluralCase="other">
+                        This kanji is composed of {{subject.data.component_subject_ids.length}} radicals. Can you see where the radicals fit in the kanji? 
+                      </ng-template>
+                    </div>
+                    <span *ngFor="let radical of subject.data.component_subject_ids">{{radical}},</span>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+              <ion-slide>
+                <ion-card style="height:100%;width:100%;margin:0%;">
+                  <ion-card-header>
+                    <ion-card-title>Meaning</ion-card-title>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                    <ion-title>Synonyms</ion-title>
+                    <div *ngIf="subject.data.meanings.length > 1; else noSynonyms">
+                      <div *ngFor="let synonym of subject.data.meanings | slice:1">
+                        {{synonym.meaning}}
+                      </div>
+                    </div>
+                    <ng-template #noSynonyms>(None)</ng-template>
+
+                    <ion-title>Meaning Mnemonic</ion-title>
+                    <div>{{subject.data.meaning_mnemonic}}</div>
+
+                    <ion-title>Meaning Notes</ion-title>
+                    TODO
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+              <ion-slide>
+                <ion-card style="height:100%;width:100%;margin:0%;">
+                  <ion-card-header>
+                    <ion-card-title>Readings</ion-card-title>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                    <ion-title>Readings (on'yomi)</ion-title>
+                    <ng-container *ngFor="let reading of subject.data.readings">
+                      <span *ngIf="reading.type=='onyomi'">{{reading.reading}},</span>
+                    </ng-container>
+                    <ion-title>Reading Mnemonic</ion-title>
+                    <div>{{subject.data.reading_mnemonic}}</div>
+
+                    <ion-title>Reading Hint</ion-title>
+                    <div>{{subject.data.reading_hint}}</div>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+              <ion-slide>
+                <ion-card style="height:100%;width:100%;margin:0%;">
+                  <ion-card-header>
+                    <ion-card-title>Examples</ion-card-title>
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                    <ng-container *ngIf="subject.data.amalgamation_subject_ids.length > 0">
+                      <ion-title>Vocabulary Examples</ion-title>
+                      <p>Here is a glimpse of some of the vocabulary you will be
+                        learning in the future that utilize the kanji:</p>
+                      <span *ngFor="let example of subject.data.amalgamation_subject_ids">{{example}},</span>
+                    </ng-container>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+            </ion-slides> 
+
+
+
+          </div>
+        </ion-slide>
+      </ng-container>
+    </ion-slides>
+  </ng-container>
+
+</ion-content>

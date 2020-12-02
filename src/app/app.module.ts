@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
-
-import {IonicModule, IonicRouteStrategy, ToastController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { IonicModule, IonicRouteStrategy, ToastController } from '@ionic/angular';
 import { WanikaniApiNgModule, WanikaniTokenModule } from 'wanikani-api-ng';
-import { MenuModule } from './menu/menu.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { HomePageModule } from './home/home.module';
-import { UserPageModule } from './user/user.module';
 import { LoginPageModule } from './login/login.module';
+import { MenuModule } from './menu/menu.module';
+import { UserPageModule } from './user/user.module';
+
 
 @NgModule({
   declarations: [AppComponent],
