@@ -27,7 +27,7 @@
                   </ion-card-header>
                 
                   <ion-card-content>
-                    <ion-title>Radical Composition</ion-title>
+                    <h1>Radical Composition</h1>
                     <div [ngPlural]="subject.data.component_subject_ids.length">
                       <ng-template ngPluralCase="=1">
                         This kanji is composed of one radical. Can you see where the radical fits in the kanji? 
@@ -47,7 +47,7 @@
                   </ion-card-header>
                 
                   <ion-card-content>
-                    <ion-title>Synonyms</ion-title>
+                    <h1>Synonyms</h1>
                     <div *ngIf="subject.data.meanings.length > 1; else noSynonyms">
                       <div *ngFor="let synonym of subject.data.meanings | slice:1">
                         {{synonym.meaning}}
@@ -55,10 +55,10 @@
                     </div>
                     <ng-template #noSynonyms>(None)</ng-template>
 
-                    <ion-title>Meaning Mnemonic</ion-title>
+                    <h1>Meaning Mnemonic</h1>
                     <div>{{subject.data.meaning_mnemonic}}</div>
 
-                    <ion-title>Meaning Notes</ion-title>
+                    <h1>Meaning Notes</h1>
                     TODO
                   </ion-card-content>
                 </ion-card>
@@ -70,14 +70,14 @@
                   </ion-card-header>
                 
                   <ion-card-content>
-                    <ion-title>Readings (on'yomi)</ion-title>
+                    <h1>Readings (on'yomi)</h1>
                     <ng-container *ngFor="let reading of subject.data.readings">
                       <span *ngIf="reading.type=='onyomi'">{{reading.reading}},</span>
                     </ng-container>
-                    <ion-title>Reading Mnemonic</ion-title>
+                    <h1>Reading Mnemonic</h1>
                     <div>{{subject.data.reading_mnemonic}}</div>
 
-                    <ion-title>Reading Hint</ion-title>
+                    <h1>Reading Hint</h1>
                     <div>{{subject.data.reading_hint}}</div>
                   </ion-card-content>
                 </ion-card>
@@ -90,7 +90,7 @@
                 
                   <ion-card-content>
                     <ng-container *ngIf="subject.data.amalgamation_subject_ids.length > 0">
-                      <ion-title>Vocabulary Examples</ion-title>
+                      <h1>Vocabulary Examples</h1>
                       <p>Here is a glimpse of some of the vocabulary you will be
                         learning in the future that utilize the kanji:</p>
                       <span *ngFor="let example of subject.data.amalgamation_subject_ids">{{example}},</span>
