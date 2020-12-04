@@ -22,7 +22,6 @@ export class UserPage implements OnInit {
 
   ngOnInit() {
     this.user$ = this.store.select(userData);
-
   }
 
   close(){
