@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, UserData } from 'wanikani-api-ng';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { UserData } from 'wanikani-api-ng';
+import { AppState } from '../state';
+import { userData } from '../state/user/user.selectors';
 
 @Component({
   selector: 'app-user-info',
@@ -10,14 +12,12 @@ import { map } from 'rxjs/operators';
 })
 export class UserInfoComponent implements OnInit {
 
-  user: Observable<UserData>;
+  user$: Observable<UserData>;
 
-  constructor(private userService:UserService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.user = this.userService.getUser().pipe(
-      map(user=>user.data)
-    )
+    this.user$ = this.store.select(userData);
   }
 
 }

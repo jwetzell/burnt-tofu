@@ -1,9 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { UserService, VoiceActor, VoiceActorService, PresentationOrder } from 'wanikani-api-ng';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, take } from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { PresentationOrder, UserService, VoiceActor, VoiceActorService } from 'wanikani-api-ng';
+import { AppState } from '../state';
+import { userData } from '../state/user/user.selectors';
 
 @Component({
   selector: 'app-settings',
@@ -15,30 +18,33 @@ export class SettingsPage implements OnInit, OnDestroy {
   private destroyed = new Subject<boolean>();
 
   voiceActors: Observable<VoiceActor[]>
-  //WaniKani accepts batch sizes from 3 to 10 inclusive this array is for using ngFor
+  // WaniKani accepts batch sizes from 3 to 10 inclusive this array is for using ngFor
   batchSizes = Array(8).fill(1).map((x,i)=>i+3)
 
-  //these are used for iterating over enums in ngFor
+  // these are used for iterating over enums in ngFor
   keys = Object.keys
   presentationOrderEnum = PresentationOrder
 
   preferencesForm = new FormGroup({
-    default_voice_actor_id: new FormControl(""),
-    lessons_autoplay_audio: new FormControl(""),
-    lessons_batch_size: new FormControl(""),
-    lessons_presentation_order: new FormControl(""),
-    reviews_autoplay_audio: new FormControl(""),
-    reviews_display_srs_indicator: new FormControl(""),
+    default_voice_actor_id: new FormControl(''),
+    lessons_autoplay_audio: new FormControl(''),
+    lessons_batch_size: new FormControl(''),
+    lessons_presentation_order: new FormControl(''),
+    reviews_autoplay_audio: new FormControl(''),
+    reviews_display_srs_indicator: new FormControl(''),
   })
 
-  constructor(  private modalController: ModalController, 
-                private userService: UserService, 
+  constructor(  private modalController: ModalController,
+                private userService: UserService,
+                private store: Store<AppState>,
                 private voiceActorService: VoiceActorService,
                 private toastController: ToastController) { }
 
   ngOnInit() {
-    this.userService.getUser().pipe(
-      map(user => user.data.preferences),
+    this.store.pipe(
+      select(userData),
+      filter(x => !!x),
+      map(user => user.preferences),
       takeUntil(this.destroyed)
     ).subscribe(
       (preferences)=>{
@@ -65,7 +71,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       take(1)
     ).subscribe(
       ()=>{
-        //this could be more elegant but works for now
+        // this could be more elegant but works for now
         this.toastController.create({
           duration: 2000,
           message: 'Preferences Successfully Updated',
@@ -77,7 +83,7 @@ export class SettingsPage implements OnInit, OnDestroy {
         )
       },
       ()=>{
-        //this could be more elegant but works for now
+        // this could be more elegant but works for now
         this.toastController.create({
           duration: 2000,
           message: 'Updating Preferences Failed',
@@ -92,7 +98,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   compareWithFn(o1,o2){
-    return o1 == o2;
+    return o1 === o2;
   }
 
 }
