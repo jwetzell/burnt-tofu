@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { UserData, UserService, WanikaniTokenService } from 'wanikani-api-ng';
 import { SettingsPage } from '../settings/settings.page';
 import { AppState } from '../state';
-import { unsetUserState } from '../state/user/user.actions';
+import { userData } from '../state/user/user.selectors';
 import { UserInfoComponent } from '../user-info/user-info.component';
 
 @Component({
@@ -16,8 +16,8 @@ import { UserInfoComponent } from '../user-info/user-info.component';
 })
 export class MenuComponent implements OnInit {
 
-  user: Observable<UserData>;
-  userLoaded = new Subject();
+  user$: Observable<UserData>;
+
   constructor(private tokenService: WanikaniTokenService,
               private userService: UserService,
               private store: Store<AppState>,
@@ -25,9 +25,9 @@ export class MenuComponent implements OnInit {
               private modalController: ModalController) { }
 
   ngOnInit() {
-    this.user = this.tokenService.getIsAuthenticated().pipe(
-      filter(auth => auth),
-      switchMap(_ => this.userService.getUser().pipe(map(user => user.data)))
+    this.user$ = this.store.pipe(
+      select(userData),
+      filter(x => !!x)
     )
   }
 
@@ -43,7 +43,6 @@ export class MenuComponent implements OnInit {
 
   logout(){
     this.tokenService.logout();
-    this.store.dispatch(unsetUserState());
   }
 
   openPreferences(){

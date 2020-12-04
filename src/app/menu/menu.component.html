@@ -1,5 +1,5 @@
 <ion-menu contentId="main" menuId="side">
-    <ion-header *ngIf="user | async as user">
+    <ion-header *ngIf="user$ | async as user">
         <ion-toolbar>
             <ion-title (click)="openUserPopOver($event)">{{user.username}}</ion-title>
             <ion-item slot="end" lines="none">Level {{user.level}}</ion-item>
@@ -29,4 +29,3 @@
     </ion-footer>
 </ion-menu>
 
- 

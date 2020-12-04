@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { SummaryData, SummaryService, UserService, WaniSubjectList } from 'wanikani-api-ng';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { SummaryData, SummaryService, WaniSubjectList } from 'wanikani-api-ng';
 import { AppState } from '../state';
-import { setSummaryData, setUserData } from '../state/user/user.actions';
-import { summaryData, userData } from '../state/user/user.selectors';
+import { setSummaryData } from '../state/user/user.actions';
+import { summaryData } from '../state/user/user.selectors';
 
 const emptySubjectList = { available_at: new Date(), subject_ids: [] };
 
@@ -30,20 +30,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private userService: UserService,
     private summaryService: SummaryService,
     private toastController: ToastController) { }
 
   ngOnInit(): void {
-    // ensure the user is set
-    // if the user was already logged in the login page wouldn't have set the user.
-    this.store.pipe(
-      takeUntil(this.destroyed$),
-      select(userData),
-      filter(user => !user), // only continue if user is undefined
-      switchMap(_ => this.userService.getUser())
-    ).subscribe(user => this.store.dispatch(setUserData({user})));
-
     this.summaryService.getSummary().pipe(
       takeUntil(this.destroyed$)
     ).subscribe(summary => this.store.dispatch(setSummaryData({summary})));
