@@ -1,13 +1,11 @@
-import { UserData } from 'wanikani-api-ng';
-
-export * from './user.actions';
-export * from './user.reducer';
-export * from './user.selectors';
+import { SummaryData, UserData } from 'wanikani-api-ng';
 
 export interface UserState {
-  userData: UserData
+  userData: UserData;
+  summaryData: SummaryData;
 }
 
 export const initialUserState: UserState = {
-  userData: undefined
+  userData: undefined,
+  summaryData: undefined
 }

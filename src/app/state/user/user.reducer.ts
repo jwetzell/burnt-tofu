@@ -5,7 +5,8 @@ import * as UserActions from './user.actions';
 const _userReducer = createReducer(
   initialUserState,
   on(UserActions.setUserData, (state, {user}) => ({...state, userData: user.data})),
-  on(UserActions.unsetUserData, (state) => ({...state, userData: undefined}))
+  on(UserActions.setSummaryData, (state, {summary}) => ({...state, summaryData: summary.data})),
+  on(UserActions.unsetUserState, (state) => ({...state, userData: undefined, summaryData: undefined})),
 )
 
 export function userReducer(state: UserState | undefined, action: Action) {
