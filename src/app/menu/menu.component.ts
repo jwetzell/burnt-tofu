@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { WanikaniTokenService, UserData, UserService } from 'wanikani-api-ng';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, filter, takeUntil, switchMap, tap } from 'rxjs/operators';
-import { PopoverController, ModalController } from '@ionic/angular';
-import { UserInfoComponent } from '../user-info/user-info.component';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { UserData, UserService, WanikaniTokenService } from 'wanikani-api-ng';
 import { SettingsPage } from '../settings/settings.page';
+import { AppState } from '../state';
+import { unsetUserState } from '../state/user/user.actions';
+import { UserInfoComponent } from '../user-info/user-info.component';
 
 @Component({
   selector: 'app-menu',
@@ -15,8 +18,9 @@ export class MenuComponent implements OnInit {
 
   user: Observable<UserData>;
   userLoaded = new Subject();
-  constructor(private tokenService: WanikaniTokenService, 
-              private userService: UserService, 
+  constructor(private tokenService: WanikaniTokenService,
+              private userService: UserService,
+              private store: Store<AppState>,
               private popoverController: PopoverController,
               private modalController: ModalController) { }
 
@@ -30,7 +34,7 @@ export class MenuComponent implements OnInit {
   openUserPopOver(event: any){
     const userPopOver = this.popoverController.create({
       component: UserInfoComponent,
-      event: event,
+      event,
       translucent: true
     })
 
@@ -38,7 +42,8 @@ export class MenuComponent implements OnInit {
   }
 
   logout(){
-    this.tokenService.logout()
+    this.tokenService.logout();
+    this.store.dispatch(unsetUserState());
   }
 
   openPreferences(){
