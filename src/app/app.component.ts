@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { MenuController, Platform } from '@ionic/angular';
+import { MenuController, Platform, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 import { UserService, WanikaniTokenService } from 'wanikani-api-ng';
 import { AppState } from './state';
 import { setUserData, unsetUserState } from './state/user/user.actions';
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private tokenService: WanikaniTokenService,
     private userService: UserService,
+    private toastController: ToastController,
     private router: Router,
     private menuController: MenuController,
   ) {
@@ -38,8 +40,19 @@ export class AppComponent implements OnInit {
           this.router.navigate(['login']);
         } else {
           // ensure the user is set
-          this.userService.getUser().subscribe(user => this.store.dispatch(setUserData({user})));
-          this.router.navigate(['home']);
+          this.userService.getUser().pipe(take(1)).subscribe(
+            {
+              next: (user) => {
+                this.store.dispatch(setUserData({user}));
+                this.router.navigate(['home']);
+              },
+              error: (err) => {
+                this.toastController.create({message: 'Something went wrong. Please verrify your api token is correct', duration: 1000})
+                  .then(t => t.present())
+                this.tokenService.logout();
+              }
+            }
+          );
         }
       }
     );
