@@ -41,6 +41,7 @@ export class SettingsPage implements OnInit, OnDestroy {
                 private toastController: ToastController) { }
 
   ngOnInit() {
+    this.preferencesForm.disable();
     this.store.pipe(
       select(userData),
       filter(x => !!x),
@@ -49,6 +50,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     ).subscribe(
       (preferences)=>{
         this.preferencesForm.patchValue(preferences)
+        this.preferencesForm.enable();
       }
     )
 
@@ -66,35 +68,37 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   updatePreferences(){
-    this.userService.updateUser(this.preferencesForm.value).pipe(
-      map(user => user.data.preferences),
-      take(1)
-    ).subscribe(
-      ()=>{
-        // this could be more elegant but works for now
-        this.toastController.create({
-          duration: 2000,
-          message: 'Preferences Successfully Updated',
-          color: 'success'
-        }).then(
-          (toast)=>{
-            toast.present()
-          }
-        )
-      },
-      ()=>{
-        // this could be more elegant but works for now
-        this.toastController.create({
-          duration: 2000,
-          message: 'Updating Preferences Failed',
-          color: 'danger'
-        }).then(
-          (toast)=>{
-            toast.present()
-          }
-        )
-      }
-    )
+    if(this.preferencesForm.enabled){
+      this.userService.updateUser(this.preferencesForm.value).pipe(
+        map(user => user.data.preferences),
+        take(1)
+      ).subscribe(
+        ()=>{
+          // this could be more elegant but works for now
+          this.toastController.create({
+            duration: 2000,
+            message: 'Preferences Successfully Updated',
+            color: 'success'
+          }).then(
+            (toast)=>{
+              toast.present()
+            }
+          )
+        },
+        ()=>{
+          // this could be more elegant but works for now
+          this.toastController.create({
+            duration: 2000,
+            message: 'Updating Preferences Failed',
+            color: 'danger'
+          }).then(
+            (toast)=>{
+              toast.present()
+            }
+          )
+        }
+      )
+    }
   }
 
   compareWithFn(o1,o2){
