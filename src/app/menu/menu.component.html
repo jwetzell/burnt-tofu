@@ -7,6 +7,15 @@
         </ion-toolbar>
     </ion-header>
     <ion-content>
+        <ng-container *ngIf="navigationEndEvents$| async as currentPage">
+            <ng-container *ngIf="currentPage.url != '/home'">
+                <ion-menu-toggle autoHide="false">
+                    <ion-item [routerLink]="['/home']">
+                        <ion-label>Dashboard</ion-label>
+                    </ion-item>
+                </ion-menu-toggle>
+            </ng-container>
+        </ng-container>
         <ion-menu-toggle autoHide="false">
             <ion-item [routerLink]="['/user']">
                 <ion-label>Advanced User Info</ion-label>
