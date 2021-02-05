@@ -1,7 +1,7 @@
 <ion-content>
-    <ion-list *ngIf="user$ | async as user">
+    <ng-container *ngIf="user$ | async as user">
         <ion-item>
-            <ion-label>{{user.subscription.type}}</ion-label>
+            <ion-label>Subscription: {{user.subscription.type | titlecase}}</ion-label>
         </ion-item>
-    </ion-list>
+    </ng-container>
 </ion-content>
