@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { PresentationOrder, UserService, VoiceActor, VoiceActorService } from 'wanikani-api-ng';
 import { AppState } from '../state';
-import { userData } from '../state/user/user.selectors';
+import { setUserPreferences } from '../state/user/user.actions';
+import { userPreferences } from '../state/user/user.selectors';
 
 @Component({
   selector: 'app-settings',
@@ -43,16 +44,13 @@ export class SettingsPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.preferencesForm.disable();
     this.store.pipe(
-      select(userData),
+      select(userPreferences),
       filter(x => !!x),
-      map(user => user.preferences),
       takeUntil(this.destroyed)
-    ).subscribe(
-      (preferences)=>{
-        this.preferencesForm.patchValue(preferences)
-        this.preferencesForm.enable();
-      }
-    )
+    ).subscribe((preferences)=>{
+      this.preferencesForm.enable();
+      this.preferencesForm.patchValue(preferences);
+    })
 
     this.voiceActors = this.voiceActorService.getAllVoiceActors().pipe(
       map(voiceActorCollection => voiceActorCollection.data)
@@ -74,6 +72,7 @@ export class SettingsPage implements OnInit, OnDestroy {
         take(1)
       ).subscribe(
         ()=>{
+          this.store.dispatch(setUserPreferences({preferences: this.preferencesForm.value}))
           // this could be more elegant but works for now
           this.toastController.create({
             duration: 2000,

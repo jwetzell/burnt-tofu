@@ -36,7 +36,7 @@
             <ion-item>
                 <ion-label>Lesson Batch Size</ion-label>
                 <ion-select formControlName="lessons_batch_size" [compareWith]="compareWithFn">
-                    <ion-select-option *ngFor="let size of batchSizes">{{size}}</ion-select-option>
+                    <ion-select-option *ngFor="let size of batchSizes" [value]="size">{{size}}</ion-select-option>
                 </ion-select>
             </ion-item>
             <ion-item>

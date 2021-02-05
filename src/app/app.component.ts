@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { UserService, WanikaniTokenService } from 'wanikani-api-ng';
 import { AppState } from './state';
-import { setUserData, unsetUserState } from './state/user/user.actions';
+import { setUserData, setUserPreferences, unsetUserState } from './state/user/user.actions';
 
 
 @Component({
@@ -44,6 +44,7 @@ export class AppComponent implements OnInit {
             {
               next: (user) => {
                 this.store.dispatch(setUserData({user}));
+                this.store.dispatch(setUserPreferences({preferences: user.data.preferences}));
                 this.router.navigate(['home']);
               },
               error: (err) => {
