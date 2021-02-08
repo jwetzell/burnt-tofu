@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { PresentationOrder, UserService, VoiceActor, VoiceActorService } from 'wanikani-api-ng';
 import { AppState } from '../state';
-import { setUserPreferences } from '../state/user/user.actions';
+import { setUserData } from '../state/user/user.actions';
 import { userPreferences } from '../state/user/user.selectors';
 
 @Component({
@@ -68,11 +68,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   updatePreferences(){
     if(this.preferencesForm.enabled){
       this.userService.updateUser(this.preferencesForm.value).pipe(
-        map(user => user.data.preferences),
         take(1)
       ).subscribe(
-        ()=>{
-          this.store.dispatch(setUserPreferences({preferences: this.preferencesForm.value}))
+        (user)=>{
+          this.store.dispatch(setUserData({user}))
           // this could be more elegant but works for now
           this.toastController.create({
             duration: 2000,
