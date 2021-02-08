@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { PresentationOrder, UserService, VoiceActor, VoiceActorService } from 'wanikani-api-ng';
 import { AppState } from '../state';
-import { userData } from '../state/user/user.selectors';
+import { setUserData } from '../state/user/user.actions';
+import { userPreferences } from '../state/user/user.selectors';
 
 @Component({
   selector: 'app-settings',
@@ -41,16 +42,15 @@ export class SettingsPage implements OnInit, OnDestroy {
                 private toastController: ToastController) { }
 
   ngOnInit() {
+    this.preferencesForm.disable();
     this.store.pipe(
-      select(userData),
+      select(userPreferences),
       filter(x => !!x),
-      map(user => user.preferences),
       takeUntil(this.destroyed)
-    ).subscribe(
-      (preferences)=>{
-        this.preferencesForm.patchValue(preferences)
-      }
-    )
+    ).subscribe((preferences)=>{
+      this.preferencesForm.enable();
+      this.preferencesForm.patchValue(preferences);
+    })
 
     this.voiceActors = this.voiceActorService.getAllVoiceActors().pipe(
       map(voiceActorCollection => voiceActorCollection.data)
@@ -66,35 +66,37 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   updatePreferences(){
-    this.userService.updateUser(this.preferencesForm.value).pipe(
-      map(user => user.data.preferences),
-      take(1)
-    ).subscribe(
-      ()=>{
-        // this could be more elegant but works for now
-        this.toastController.create({
-          duration: 2000,
-          message: 'Preferences Successfully Updated',
-          color: 'success'
-        }).then(
-          (toast)=>{
-            toast.present()
-          }
-        )
-      },
-      ()=>{
-        // this could be more elegant but works for now
-        this.toastController.create({
-          duration: 2000,
-          message: 'Updating Preferences Failed',
-          color: 'danger'
-        }).then(
-          (toast)=>{
-            toast.present()
-          }
-        )
-      }
-    )
+    if(this.preferencesForm.enabled){
+      this.userService.updateUser(this.preferencesForm.value).pipe(
+        take(1)
+      ).subscribe(
+        (user)=>{
+          this.store.dispatch(setUserData({user}))
+          // this could be more elegant but works for now
+          this.toastController.create({
+            duration: 2000,
+            message: 'Preferences Successfully Updated',
+            color: 'success'
+          }).then(
+            (toast)=>{
+              toast.present()
+            }
+          )
+        },
+        ()=>{
+          // this could be more elegant but works for now
+          this.toastController.create({
+            duration: 2000,
+            message: 'Updating Preferences Failed',
+            color: 'danger'
+          }).then(
+            (toast)=>{
+              toast.present()
+            }
+          )
+        }
+      )
+    }
   }
 
   compareWithFn(o1,o2){

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { UserData, UserService, WanikaniTokenService } from 'wanikani-api-ng';
+import { UserData, WanikaniTokenService } from 'wanikani-api-ng';
 import { SettingsPage } from '../settings/settings.page';
 import { AppState } from '../state';
 import { userData } from '../state/user/user.selectors';
@@ -18,16 +19,22 @@ export class MenuComponent implements OnInit {
 
   user$: Observable<UserData>;
 
+  navigationEndEvents$: Observable<Event>;
+
   constructor(private tokenService: WanikaniTokenService,
-              private userService: UserService,
               private store: Store<AppState>,
               private popoverController: PopoverController,
-              private modalController: ModalController) { }
+              private modalController: ModalController,
+              private router: Router) { }
 
   ngOnInit() {
     this.user$ = this.store.pipe(
       select(userData),
       filter(x => !!x)
+    )
+
+    this.navigationEndEvents$ = this.router.events.pipe(
+      filter(event=>event instanceof NavigationEnd)
     )
   }
 

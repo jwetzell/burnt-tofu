@@ -24,10 +24,10 @@
             Profile URL: {{user.profile_url}}
         </ion-item>
         <ion-item>
-            Started At: {{user.started_at}}
+            Started At: {{user.started_at | date:'medium' }}
         </ion-item>
         <ion-item>
-            Current Vacation Started: {{user.current_vacation_started_at}}
+            Current Vacation Started: {{user.current_vacation_started_at | date:'medium'}}
         </ion-item>
     </ion-list>
     <ion-list>
@@ -38,13 +38,13 @@
             Active: {{user.subscription.active}}
         </ion-item>
         <ion-item>
-            Type: {{user.subscription.type}}
+            Type: {{user.subscription.type | titlecase }}
         </ion-item>
         <ion-item>
             Max Level Granted: {{user.subscription.max_level_granted}}
         </ion-item>
         <ion-item>
-            Period Ends At: {{user.subscription.period_ends_at}}
+            Period Ends At: {{user.subscription.period_ends_at | date:'medium'}}
         </ion-item>
     </ion-list>
     <ion-list>
